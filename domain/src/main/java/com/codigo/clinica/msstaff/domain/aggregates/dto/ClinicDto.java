@@ -12,18 +12,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DoctorDto {
+public class ClinicDto {
     private Long id;
     private String name;
-    private String surname;
     private String identificationType;
     private String identificationNumber;
-    private String cmp;
-    private String speciality;
-    private String gender;
     private String phone;
     private String email;
     private String address;
+    private String website;
     private Integer status;
     private String createdBy;
     private Timestamp createOn;
@@ -31,7 +28,5 @@ public class DoctorDto {
     private Timestamp updatedOn;
     private String deletedBy;
     private Timestamp deletedOn;
-    private Long clinicId;
-    private List<AppointmentDto> appointments;
+    private List<DoctorDto> doctors;
 }
-
