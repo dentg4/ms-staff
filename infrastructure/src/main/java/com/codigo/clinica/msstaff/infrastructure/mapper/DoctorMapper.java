@@ -22,8 +22,8 @@ public class DoctorMapper {
                 .phone(entity.getPhone())
                 .email(entity.getEmail())
                 .address(entity.getAddress())
-                .clinicId(entity.getClinic().getId())
-                .appointments(mapList(entity.getAppointments(),AppointmentMapper::fromEntity))
+                .clinicId(entity.getClinic() == null ? null : entity.getClinic().getIdentificationNumber())
+
                 .status(entity.getStatus())
                 .createdBy(entity.getCreatedBy())
                 .createOn(entity.getCreatedOn())

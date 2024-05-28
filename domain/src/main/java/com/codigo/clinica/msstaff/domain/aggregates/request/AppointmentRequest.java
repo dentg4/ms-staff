@@ -13,5 +13,5 @@ public class AppointmentRequest {
     private Timestamp date;
     private Integer duration;
     private Long doctor;
-    //private Long patient;
+    private Long patient;
 }

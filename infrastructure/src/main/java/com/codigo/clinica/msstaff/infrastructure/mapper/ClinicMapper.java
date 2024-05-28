@@ -20,6 +20,7 @@ public class ClinicMapper {
                 .address(entity.getAddress())
                 .website(entity.getWebsite())
                 .doctors(mapList(entity.getDoctors(), DoctorMapper::fromEntity))
+
                 .status(entity.getStatus())
                 .createdBy(entity.getCreatedBy())
                 .createOn(entity.getCreatedOn())

@@ -1,5 +1,6 @@
 package com.codigo.clinica.msstaff.infrastructure.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -47,9 +48,10 @@ public class Appointment {
     private Timestamp deletedOn;
 
     @JoinColumn(name = "patient_id")
-    private Long patientId;
+    private Long patient;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 }

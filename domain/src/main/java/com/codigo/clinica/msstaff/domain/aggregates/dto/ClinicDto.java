@@ -21,6 +21,7 @@ public class ClinicDto {
     private String email;
     private String address;
     private String website;
+
     private Integer status;
     private String createdBy;
     private Timestamp createOn;

@@ -1,15 +1,24 @@
 package com.codigo.clinica.msstaff.infrastructure.adapters;
 
+import com.codigo.clinica.msstaff.domain.aggregates.constants.Constants;
 import com.codigo.clinica.msstaff.domain.aggregates.dto.DoctorDto;
+import com.codigo.clinica.msstaff.domain.aggregates.dto.ReniecDto;
 import com.codigo.clinica.msstaff.domain.aggregates.request.DoctorRequest;
 import com.codigo.clinica.msstaff.domain.ports.out.DoctorServiceOut;
 import com.codigo.clinica.msstaff.infrastructure.client.ClientReniec;
+import com.codigo.clinica.msstaff.infrastructure.dao.ClinicRepository;
 import com.codigo.clinica.msstaff.infrastructure.dao.DoctorRepository;
+import com.codigo.clinica.msstaff.infrastructure.entity.Clinic;
+import com.codigo.clinica.msstaff.infrastructure.entity.Doctor;
+import com.codigo.clinica.msstaff.infrastructure.mapper.DoctorMapper;
 import com.codigo.clinica.msstaff.infrastructure.redis.RedisService;
+import com.codigo.clinica.msstaff.infrastructure.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +27,7 @@ import java.util.Optional;
 public class DoctorAddapter implements DoctorServiceOut {
 
     private final DoctorRepository doctorRepository;
+    private final ClinicRepository clinicRepository;
     private final RedisService redisService;
     private final ClientReniec clientReniec;
 
@@ -29,26 +39,95 @@ public class DoctorAddapter implements DoctorServiceOut {
 
     @Override
     public DoctorDto createOut(DoctorRequest request) {
-        return null;
+        Doctor doctor = getEntity(new Doctor(), request,false, null);
+        return DoctorMapper.fromEntity(doctorRepository.save(doctor));
     }
 
     @Override
     public Optional<DoctorDto> findByIdOut(Long id) {
-        return Optional.empty();
+        String redisInfo = redisService.getFromRedis(Constants.REDIS_GET_DOCTOR + id);
+        DoctorDto doctorDto;
+        if(redisInfo != null){
+            doctorDto = Util.convertFromString(redisInfo, DoctorDto.class);
+        }else{
+            doctorDto = DoctorMapper.fromEntity(doctorRepository.findById(id).get());
+            String dataForRedis = Util.convertToString(doctorDto);
+            redisService.saveInRedis(Constants.REDIS_GET_DOCTOR + id, dataForRedis, redisExpirationTime);
+        }
+        return Optional.of(doctorDto);
     }
 
     @Override
     public List<DoctorDto> getAllOut() {
-        return List.of();
+        List<DoctorDto> dtoList = new ArrayList<>();
+        List<Doctor> entities = doctorRepository.findAll();
+        for (Doctor data : entities){
+            dtoList.add(DoctorMapper.fromEntity(data));
+        }
+        return dtoList;
     }
 
     @Override
     public DoctorDto updateOut(Long id, DoctorRequest request) {
-        return null;
+        Optional<Doctor> extractedData = doctorRepository.findById(id);
+        if(extractedData.isPresent()){
+            Doctor doctor = getEntity(extractedData.get(), request,true, id);
+            return DoctorMapper.fromEntity(doctorRepository.save(doctor));
+        }else {
+            throw new RuntimeException();
+        }
     }
 
     @Override
     public DoctorDto deleteOut(Long id) {
-        return null;
+        Optional<Doctor> extractedData = doctorRepository.findById(id);
+        if(extractedData.isPresent()){
+            extractedData.get().setStatus(0);
+            extractedData.get().setDeletedBy(Constants.USU_ADMIN);
+            extractedData.get().setDeletedOn(getTimestamp());
+            return DoctorMapper.fromEntity(doctorRepository.save(extractedData.get()));
+        }else {
+            throw new RuntimeException();
+        }
+    }
+
+    // Support Methods
+    private Doctor getEntity(Doctor entity, DoctorRequest doctorRequest, boolean updateIf, Long id){
+        ReniecDto reniecDto = getReniec(doctorRequest.getIdentificationNumber());
+
+        entity.setIdentificationType(reniecDto.getTipoDocumento());
+        entity.setIdentificationNumber(reniecDto.getNumeroDocumento());
+        entity.setName(reniecDto.getNombres());
+        entity.setSurname(reniecDto.getApellidoMaterno() + " " + reniecDto.getApellidoMaterno());
+        entity.setCmp(doctorRequest.getCmp());
+        entity.setSpeciality(doctorRequest.getSpeciality());
+        entity.setGender(doctorRequest.getGender());
+        entity.setPhone(doctorRequest.getPhone());
+        entity.setEmail(doctorRequest.getEmail());
+        entity.setAddress(doctorRequest.getAddress());
+        entity.setStatus(Constants.STATUS_ACTIVE);
+
+        Clinic clinic = clinicRepository.findByIdentificationNumber(doctorRequest.getClinic());
+        entity.setClinic(clinic);
+
+        if (updateIf) {
+            entity.setId(id);
+            entity.setUpdatedBy(Constants.USU_ADMIN);
+            entity.setUpdatedOn(getTimestamp());
+        } else {
+            entity.setCreatedBy(Constants.USU_ADMIN);
+            entity.setCreatedOn(getTimestamp());
+        }
+        return entity;
+    }
+
+    private ReniecDto getReniec(String identificationNumber){
+        String authorization = "Bearer " + tokenReniec;
+        return clientReniec.getInfoReniec(identificationNumber, authorization);
+    }
+
+    private Timestamp getTimestamp(){
+        long currenTime = System.currentTimeMillis();
+        return new Timestamp(currenTime);
     }
 }
