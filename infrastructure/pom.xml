@@ -6,20 +6,19 @@
         <artifactId>ms-staff</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>application</artifactId>
-    <name>Archetype - application</name>
+    <artifactId>infrastructure</artifactId>
+    <name>Archetype - infraestructure</name>
     <version>0.0.1</version>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
             <groupId>com.codigo.clinica</groupId>
-            <artifactId>infrastructure</artifactId>
+            <artifactId>domain</artifactId>
             <version>0.0.1</version>
         </dependency>
         <dependency>
-            <groupId>com.codigo.clinica</groupId>
-            <artifactId>domain</artifactId>
-            <version>0.0.1</version>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
     </dependencies>
 </project>

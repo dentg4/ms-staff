@@ -22,6 +22,8 @@ public class AppointmentDto {
     private Timestamp updatedOn;
     private String deletedBy;
     private Timestamp deletedOn;
+    private Long patientId;
     private Long doctorId;
-    //private Long patientId;
+    private PatientDto patient;
+    private DoctorDto doctor;
 }
