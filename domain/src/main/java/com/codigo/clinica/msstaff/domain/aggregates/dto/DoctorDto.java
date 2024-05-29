@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,6 +24,8 @@ public class DoctorDto {
     private String phone;
     private String email;
     private String address;
+    private String clinicId;
+
     private Integer status;
     private String createdBy;
     private Timestamp createOn;
@@ -31,7 +33,6 @@ public class DoctorDto {
     private Timestamp updatedOn;
     private String deletedBy;
     private Timestamp deletedOn;
-    private Long clinicId;
-    private List<AppointmentDto> appointments;
+    //private Set<AppointmentDto> appointments;
 }
 

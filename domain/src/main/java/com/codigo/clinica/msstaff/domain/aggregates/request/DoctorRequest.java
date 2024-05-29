@@ -18,5 +18,5 @@ public class DoctorRequest {
     private String phone;
     private String email;
     private String address;
-    //private Long clinic;
+    private String clinic;
 }
