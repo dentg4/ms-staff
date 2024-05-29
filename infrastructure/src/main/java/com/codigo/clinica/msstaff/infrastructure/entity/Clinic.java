@@ -25,7 +25,7 @@ public class Clinic {
     @Column(name = "identification_type", nullable = false, length = 16)
     private String identificationType;
 
-    @Column(name = "identification_number", nullable = false, length = 11)
+    @Column(name = "identification_number", nullable = false, length = 11, unique = true)
     private String identificationNumber;
 
     @Column(name = "phone", length = 15)

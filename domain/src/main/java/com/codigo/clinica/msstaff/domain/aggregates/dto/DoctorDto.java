@@ -33,6 +33,5 @@ public class DoctorDto {
     private Timestamp updatedOn;
     private String deletedBy;
     private Timestamp deletedOn;
-    //private Set<AppointmentDto> appointments;
 }
 

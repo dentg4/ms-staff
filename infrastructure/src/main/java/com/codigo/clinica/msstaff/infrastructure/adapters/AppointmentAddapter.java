@@ -89,19 +89,20 @@ public class AppointmentAddapter implements AppointmentServiceOut {
     private Appointment getEntity(Appointment entity, AppointmentRequest appointmentRequest, boolean updateIf, Long id){
         entity.setDate(appointmentRequest.getDate());
         entity.setDuration(appointmentRequest.getDuration());
+        //buscar patient, client ms-patient
         entity.setPatient(appointmentRequest.getPatient());
 
         Doctor doctor = doctorRepository.findById(appointmentRequest.getDoctor())
                 .orElseThrow(() -> new RuntimeException("Doctor not found"));
         entity.setDoctor(doctor);
 
-        entity.setStatus(Constants.STATUS_ACTIVE);
 
         if (updateIf) {
             entity.setId(id);
             entity.setUpdatedBy(Constants.USU_ADMIN);
             entity.setUpdatedOn(getTimestamp());
         } else {
+            entity.setStatus(Constants.STATUS_ACTIVE);
             entity.setCreatedBy(Constants.USU_ADMIN);
             entity.setCreatedOn(getTimestamp());
         }

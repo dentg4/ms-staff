@@ -63,7 +63,8 @@ public class ClinicController {
     })
     @GetMapping("/find/{id}")
     public ResponseEntity<ClinicDto> getPatientById(@PathVariable Long id){
-        return ResponseEntity.ok(clinicServiceIn.findByIdIn(id).orElseThrow());
+        return clinicServiceIn.findByIdIn(id).map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
     @Operation(summary = "Actualizar una Clínica.",

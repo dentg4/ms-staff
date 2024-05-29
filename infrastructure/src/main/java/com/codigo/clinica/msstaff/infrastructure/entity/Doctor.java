@@ -31,13 +31,13 @@ public class Doctor {
     @Column(name = "identification_type", nullable = false, length = 16)
     private String identificationType;
 
-    @Column(name = "identification_number", nullable = false, length = 15)
+    @Column(name = "identification_number", nullable = false, length = 15, unique = true)
     private String identificationNumber;
 
     @Column(name = "cmp", nullable = false, length = 6)
     private String cmp;
 
-    @Column(name = "speciality", nullable = false, length = 6)
+    @Column(name = "speciality", nullable = false, length = 254)
     private String speciality;
 
     @Column(name = "gender", nullable = false, length = 15)

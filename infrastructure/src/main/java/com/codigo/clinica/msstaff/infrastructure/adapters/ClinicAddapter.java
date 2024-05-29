@@ -99,13 +99,13 @@ public class ClinicAddapter implements ClinicServiceOut {
         entity.setPhone(clinicRequest.getPhone());
         entity.setEmail(clinicRequest.getEmail());
         entity.setWebsite(clinicRequest.getWebsite());
-        entity.setStatus(Constants.STATUS_ACTIVE);
 
         if (updateIf) {
             entity.setId(id);
             entity.setUpdatedBy(Constants.USU_ADMIN);
             entity.setUpdatedOn(getTimestamp());
         } else {
+            entity.setStatus(Constants.STATUS_ACTIVE);
             entity.setCreatedBy(Constants.USU_ADMIN);
             entity.setCreatedOn(getTimestamp());
         }

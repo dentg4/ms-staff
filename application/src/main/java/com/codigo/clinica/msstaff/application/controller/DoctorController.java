@@ -63,7 +63,8 @@ public class DoctorController {
     })
     @GetMapping("/find/{id}")
     public ResponseEntity<DoctorDto> getPatientById(@PathVariable Long id){
-        return ResponseEntity.ok(doctorServiceIn.findByIdIn(id).orElseThrow());
+        return doctorServiceIn.findByIdIn(id).map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
     @Operation(summary = "Actualizar un Doctor.",

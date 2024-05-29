@@ -8,11 +8,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ClinicRequest {
-    private String name;
-    private String identificationType;
     private String identificationNumber;
     private String phone;
     private String email;
-    private String address;
     private String website;
 }

@@ -105,9 +105,11 @@ public class DoctorAddapter implements DoctorServiceOut {
         entity.setPhone(doctorRequest.getPhone());
         entity.setEmail(doctorRequest.getEmail());
         entity.setAddress(doctorRequest.getAddress());
-        entity.setStatus(Constants.STATUS_ACTIVE);
 
-        Clinic clinic = clinicRepository.findByIdentificationNumber(doctorRequest.getClinic());
+        Clinic clinic = clinicRepository.findByIdentificationNumber(doctorRequest.getClinic()).orElseThrow(()->{
+            throw new RuntimeException("Clinic not found");
+        });
+
         entity.setClinic(clinic);
 
         if (updateIf) {
@@ -115,6 +117,7 @@ public class DoctorAddapter implements DoctorServiceOut {
             entity.setUpdatedBy(Constants.USU_ADMIN);
             entity.setUpdatedOn(getTimestamp());
         } else {
+            entity.setStatus(Constants.STATUS_ACTIVE);
             entity.setCreatedBy(Constants.USU_ADMIN);
             entity.setCreatedOn(getTimestamp());
         }

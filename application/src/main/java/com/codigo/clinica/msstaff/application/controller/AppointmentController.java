@@ -63,7 +63,8 @@ public class AppointmentController {
     })
     @GetMapping("/find/{id}")
     public ResponseEntity<AppointmentDto> getPatientById(@PathVariable Long id){
-        return ResponseEntity.ok(appointmentServiceIn.findByIdIn(id).orElseThrow());
+        return appointmentServiceIn.findByIdIn(id).map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
     @Operation(summary = "Actualizar una Cita.",

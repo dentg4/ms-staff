@@ -8,9 +8,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class DoctorRequest {
-    private String name;
-    private String surname;
-    private String identificationType;
     private String identificationNumber;
     private String cmp;
     private String speciality;
