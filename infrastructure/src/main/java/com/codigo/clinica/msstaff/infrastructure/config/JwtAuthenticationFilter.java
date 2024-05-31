@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
            return;
         }
         if(tokenResponse.getUsername()!=null && SecurityContextHolder.getContext().getAuthentication() == null){
-            Collection<SimpleGrantedAuthority> authorities =tokenResponse.getRoles().stream().map(role->new SimpleGrantedAuthority("ROLE_"+role)).toList();
+            Collection<SimpleGrantedAuthority> authorities =tokenResponse.getRoles().stream().map(SimpleGrantedAuthority::new).toList();
 
             UserDetails userDetails = new User(tokenResponse.getUsername(), "", authorities);
             if(!tokenResponse.getIsTokenExpired()){
