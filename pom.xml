@@ -18,10 +18,17 @@
         <module>application</module>
 		<module>domain</module>
 		<module>infrastructure</module>
+		<module>report-jacoco</module>
 	</modules>
     <properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.5</spring-cloud.version>
+		<sonar.host.url>http://localhost:9000/</sonar.host.url>
+		<sonar.projectKey>ms-prescription</sonar.projectKey>
+		<sonar.projectName>ms-prescription</sonar.projectName>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.coverage.exclusions>**/com/codigo/clinica/msstaff/application/controller/**</sonar.coverage.exclusions>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../report-jacoco/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -132,6 +139,19 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
