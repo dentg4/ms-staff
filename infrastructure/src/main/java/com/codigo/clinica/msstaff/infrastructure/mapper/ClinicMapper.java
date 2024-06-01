@@ -9,6 +9,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ClinicMapper {
+    private ClinicMapper() {
+    }
+
     public static ClinicDto fromEntity(Clinic entity) {
         return ClinicDto.builder()
                 .id(entity.getId())
@@ -34,7 +37,7 @@ public class ClinicMapper {
     public static  <T, R> List<R> mapList(List<T> list, Function<T, R> mapper) {
 
         return list != null
-                ? list.stream().map(mapper).collect(Collectors.toList())
+                ? list.stream().map(mapper).toList()
                 : Collections.emptyList();
     }
 }

@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -31,10 +30,8 @@ public class ClinicController {
 
     @Operation(summary = "Crear una Clínica.",
             description = "Para usar este EndPoint, debes enviar un objeto Clínica que será guardado en base de datos, previa validacion.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Clínica creada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClinicDto.class))}),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
-    })
+    @ApiResponse(responseCode = "200", description = "Clínica creada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClinicDto.class))})
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PostMapping("/create")
     public ResponseEntity<ClinicDto> create(@Valid @RequestBody ClinicRequest request){
         return ResponseEntity
@@ -44,10 +41,8 @@ public class ClinicController {
 
     @Operation(summary = "Buscar todos los registros de Clínicas.",
             description = "EndPoint que lista todos los registros de Clínicas de la base de datos.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Clínicas encontradas con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClinicDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Clínicas no encontradas.", content = { @Content(schema = @Schema()) })
-    })
+    @ApiResponse(responseCode = "200", description = "Clínicas encontradas con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClinicDto.class))})
+    @ApiResponse(responseCode = "404", description = "Clínicas no encontradas.", content = { @Content(schema = @Schema()) })
     @GetMapping("/all")
     public ResponseEntity<List<ClinicDto>> getAll(){
         return ResponseEntity.ok(clinicServiceIn.getAllIn());
@@ -58,10 +53,8 @@ public class ClinicController {
             parameters = {
                     @Parameter(name = "id", description = "Id de búsqueda.", required = true, example = "1")
             })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Clínica encontrado con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClinicDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Clínica no encontrado.", content = { @Content(schema = @Schema()) })
-    })
+    @ApiResponse(responseCode = "200", description = "Clínica encontrado con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClinicDto.class))})
+    @ApiResponse(responseCode = "404", description = "Clínica no encontrado.", content = { @Content(schema = @Schema()) })
     @GetMapping("/find/{id}")
     public ResponseEntity<ClinicDto> getPatientById(@PathVariable Long id){
         return clinicServiceIn.findByIdIn(id).map(ResponseEntity::ok)
@@ -73,10 +66,8 @@ public class ClinicController {
             parameters = {
                     @Parameter(name = "id", description = "Id de Clínica.", required = true, example = "1"),
             })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Clínica actualizada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClinicDto.class))}),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
-    })
+    @ApiResponse(responseCode = "200", description = "Clínica actualizada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClinicDto.class))})
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PutMapping("/update/{id}")
     public ResponseEntity<ClinicDto> updatePatient(@PathVariable Long id,
                                                    @Valid @RequestBody ClinicRequest request){
@@ -88,10 +79,8 @@ public class ClinicController {
             parameters = {
                     @Parameter(name = "id", description = "Id para eliminación.", required = true, example = "1")
             })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Clínica eliminada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClinicDto.class))}),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
-    })
+    @ApiResponse(responseCode = "200", description = "Clínica eliminada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClinicDto.class))})
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ClinicDto> deletePatient(@PathVariable Long id){
         return ResponseEntity.ok(clinicServiceIn.deleteIn(id));

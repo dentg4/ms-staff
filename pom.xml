@@ -15,17 +15,17 @@
     <name>ms-staff</name>
 	<description>Microservicio de Staff para la clínica</description>
     <modules>
-        <module>application</module>
 		<module>domain</module>
 		<module>infrastructure</module>
+		<module>application</module>
 		<module>report-jacoco</module>
 	</modules>
     <properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.5</spring-cloud.version>
 		<sonar.host.url>http://localhost:9000/</sonar.host.url>
-		<sonar.projectKey>ms-prescription</sonar.projectKey>
-		<sonar.projectName>ms-prescription</sonar.projectName>
+		<sonar.projectKey>ms-staff</sonar.projectKey>
+		<sonar.projectName>ms-staff</sonar.projectName>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.coverage.exclusions>**/com/codigo/clinica/msstaff/application/controller/**</sonar.coverage.exclusions>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../report-jacoco/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
@@ -125,21 +125,7 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<image>
-						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
-					</image>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "appointments")

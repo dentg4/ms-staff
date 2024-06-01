@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -31,10 +30,8 @@ public class AppointmentController {
 
     @Operation(summary = "Crear una Cita.",
             description = "Para usar este EndPoint, debes enviar un objeto Cita que será guardado en base de datos, previa validacion.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Cita creada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentDto.class))}),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
-    })
+    @ApiResponse(responseCode = "200", description = "Cita creada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentDto.class))})
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PostMapping("/create")
     public ResponseEntity<AppointmentDto> create(@Valid @RequestBody AppointmentRequest request){
         return ResponseEntity
@@ -44,10 +41,8 @@ public class AppointmentController {
 
     @Operation(summary = "Buscar todos los registros de Citas.",
             description = "EndPoint que lista todos los registros de Citas de la base de datos.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Citas encontradas con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Citas no encontradas.", content = { @Content(schema = @Schema()) })
-    })
+    @ApiResponse(responseCode = "200", description = "Citas encontradas con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentDto.class))})
+    @ApiResponse(responseCode = "404", description = "Citas no encontradas.", content = { @Content(schema = @Schema()) })
     @GetMapping("/all")
     public ResponseEntity<List<AppointmentDto>> getAll(){
         return ResponseEntity.ok(appointmentServiceIn.getAllIn());
@@ -58,10 +53,8 @@ public class AppointmentController {
             parameters = {
                     @Parameter(name = "id", description = "Id de búsqueda.", required = true, example = "1")
             })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Cita encontrado con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Cita no encontrado.", content = { @Content(schema = @Schema()) })
-    })
+    @ApiResponse(responseCode = "200", description = "Cita encontrado con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentDto.class))})
+    @ApiResponse(responseCode = "404", description = "Cita no encontrado.", content = { @Content(schema = @Schema()) })
     @GetMapping("/find/{id}")
     public ResponseEntity<AppointmentDto> getPatientById(@PathVariable Long id){
         return appointmentServiceIn.findByIdIn(id).map(ResponseEntity::ok)
@@ -73,10 +66,8 @@ public class AppointmentController {
             parameters = {
                     @Parameter(name = "id", description = "Id de Cita.", required = true, example = "1"),
             })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Cita actualizada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentDto.class))}),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
-    })
+    @ApiResponse(responseCode = "200", description = "Cita actualizada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentDto.class))})
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PutMapping("/update/{id}")
     public ResponseEntity<AppointmentDto> updatePatient(@PathVariable Long id,
                                                         @Valid @RequestBody AppointmentRequest request){
@@ -88,10 +79,8 @@ public class AppointmentController {
             parameters = {
                     @Parameter(name = "id", description = "Id para eliminación.", required = true, example = "1")
             })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Cita eliminada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentDto.class))}),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
-    })
+    @ApiResponse(responseCode = "200", description = "Cita eliminada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentDto.class))})
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<AppointmentDto> deletePatient(@PathVariable Long id){
         return ResponseEntity.ok(appointmentServiceIn.deleteIn(id));

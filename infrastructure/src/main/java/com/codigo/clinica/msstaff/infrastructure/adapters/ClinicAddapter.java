@@ -8,6 +8,7 @@ import com.codigo.clinica.msstaff.domain.ports.out.ClinicServiceOut;
 import com.codigo.clinica.msstaff.infrastructure.client.ClientSunat;
 import com.codigo.clinica.msstaff.infrastructure.dao.ClinicRepository;
 import com.codigo.clinica.msstaff.infrastructure.entity.Clinic;
+import com.codigo.clinica.msstaff.infrastructure.exceptions.ResponseValidationException;
 import com.codigo.clinica.msstaff.infrastructure.mapper.ClinicMapper;
 import com.codigo.clinica.msstaff.infrastructure.redis.RedisService;
 import com.codigo.clinica.msstaff.infrastructure.util.Util;
@@ -71,7 +72,7 @@ public class ClinicAddapter implements ClinicServiceOut {
             Clinic clinic = getEntity(extractedData.get(), request,true, id);
             return ClinicMapper.fromEntity(clinicRepository.save(clinic));
         }else {
-            throw new RuntimeException();
+            throw new ResponseValidationException("Clinic not found.");
         }
     }
 
@@ -84,18 +85,18 @@ public class ClinicAddapter implements ClinicServiceOut {
             extractedData.get().setDeletedOn(getTimestamp());
             return ClinicMapper.fromEntity(clinicRepository.save(extractedData.get()));
         }else {
-            throw new RuntimeException();
+            throw new ResponseValidationException("Clinic not found.");
         }
     }
 
     // Support Methods
     private Clinic getEntity(Clinic entity, ClinicRequest clinicRequest, boolean updateIf, Long id){
-        SunatDto SunatDto = getExecSunat(clinicRequest.getIdentificationNumber());
+        SunatDto sunatDto = getExecSunat(clinicRequest.getIdentificationNumber());
 
-        entity.setIdentificationType(SunatDto.getTipoDocumento());
-        entity.setIdentificationNumber(SunatDto.getNumeroDocumento());
-        entity.setName(SunatDto.getRazonSocial());
-        entity.setAddress(SunatDto.getDireccion());
+        entity.setIdentificationType(sunatDto.getTipoDocumento());
+        entity.setIdentificationNumber(sunatDto.getNumeroDocumento());
+        entity.setName(sunatDto.getRazonSocial());
+        entity.setAddress(sunatDto.getDireccion());
         entity.setPhone(clinicRequest.getPhone());
         entity.setEmail(clinicRequest.getEmail());
         entity.setWebsite(clinicRequest.getWebsite());

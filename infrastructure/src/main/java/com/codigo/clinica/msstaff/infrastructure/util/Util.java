@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class Util {
+    private Util() {
+    }
 
     public static <T> String convertToString(T objectTo){
         try {

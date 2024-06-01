@@ -10,6 +10,7 @@ import com.codigo.clinica.msstaff.infrastructure.dao.ClinicRepository;
 import com.codigo.clinica.msstaff.infrastructure.dao.DoctorRepository;
 import com.codigo.clinica.msstaff.infrastructure.entity.Clinic;
 import com.codigo.clinica.msstaff.infrastructure.entity.Doctor;
+import com.codigo.clinica.msstaff.infrastructure.exceptions.ResponseValidationException;
 import com.codigo.clinica.msstaff.infrastructure.mapper.DoctorMapper;
 import com.codigo.clinica.msstaff.infrastructure.redis.RedisService;
 import com.codigo.clinica.msstaff.infrastructure.util.Util;
@@ -74,7 +75,7 @@ public class DoctorAddapter implements DoctorServiceOut {
             Doctor doctor = getEntity(extractedData.get(), request,true, id);
             return DoctorMapper.fromEntity(doctorRepository.save(doctor));
         }else {
-            throw new RuntimeException();
+            throw new ResponseValidationException("Doctor not found.");
         }
     }
 
@@ -87,7 +88,7 @@ public class DoctorAddapter implements DoctorServiceOut {
             extractedData.get().setDeletedOn(getTimestamp());
             return DoctorMapper.fromEntity(doctorRepository.save(extractedData.get()));
         }else {
-            throw new RuntimeException();
+            throw new ResponseValidationException("Doctor not found.");
         }
     }
 
@@ -107,7 +108,7 @@ public class DoctorAddapter implements DoctorServiceOut {
         entity.setAddress(doctorRequest.getAddress());
 
         Clinic clinic = clinicRepository.findByIdentificationNumber(doctorRequest.getClinic()).orElseThrow(()->{
-            throw new RuntimeException("Clinic not found");
+            throw new ResponseValidationException("Clinic not found");
         });
 
         entity.setClinic(clinic);

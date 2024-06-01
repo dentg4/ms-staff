@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.util.List;;
+import java.util.List;
 
 @Entity
 @Table(name = "clinics")
