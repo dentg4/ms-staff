@@ -117,7 +117,7 @@ class AppointmentAdapterTest {
         appointment.setPatient(1L);
         appointment.setDoctor(new Doctor());
 
-        PatientDto patientDto = PatientDto.builder().id(appointment.getPatient()).build();
+        PatientDto patientDto = PatientDto.builder().idPatient(appointment.getPatient()).build();
 
         //SIMULATE
         when(redisService.getFromRedis(anyString())).thenReturn(null);
@@ -204,7 +204,7 @@ class AppointmentAdapterTest {
                 .doctor(1L)
                 .build();
 
-        PatientDto patientDto = PatientDto.builder().id(appointment.getPatient()).build();
+        PatientDto patientDto = PatientDto.builder().idPatient(appointment.getPatient()).build();
 
         //SIMULATE
         when(appointmentRepository.findById(anyLong())).thenReturn(Optional.of(appointment));
