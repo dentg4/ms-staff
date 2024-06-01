@@ -48,7 +48,8 @@ public class ClinicAddapter implements ClinicServiceOut {
         if(redisInfo != null){
             clinicDto = Util.convertFromString(redisInfo, ClinicDto.class);
         }else{
-            clinicDto = ClinicMapper.fromEntity(clinicRepository.findById(id).get());
+            Clinic clinic = clinicRepository.findById(id).orElseThrow(()->new ResponseValidationException("Clinic not found"));
+            clinicDto = ClinicMapper.fromEntity(clinic);
             String dataForRedis = Util.convertToString(clinicDto);
             redisService.saveInRedis(Constants.REDIS_GET_CLINIC + id, dataForRedis, redisExpirationTime);
         }

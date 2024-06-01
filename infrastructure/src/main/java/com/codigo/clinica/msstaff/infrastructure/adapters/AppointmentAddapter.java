@@ -45,7 +45,8 @@ public class AppointmentAddapter implements AppointmentServiceOut {
         if(redisInfo != null){
             appointmentDto = Util.convertFromString(redisInfo, AppointmentDto.class);
         }else{
-            appointmentDto = AppointmentMapper.fromEntity(appointmentRepository.findById(id).get());
+            Appointment appointment = appointmentRepository.findById(id).orElseThrow(()->new ResponseValidationException("Appointment not found"));
+            appointmentDto = AppointmentMapper.fromEntity(appointment);
             String dataForRedis = Util.convertToString(appointmentDto);
             redisService.saveInRedis(Constants.REDIS_GET_APPOINTMENT + id, dataForRedis, redisExpirationTime);
         }

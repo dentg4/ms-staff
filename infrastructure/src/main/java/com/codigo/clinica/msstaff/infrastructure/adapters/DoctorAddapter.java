@@ -51,7 +51,8 @@ public class DoctorAddapter implements DoctorServiceOut {
         if(redisInfo != null){
             doctorDto = Util.convertFromString(redisInfo, DoctorDto.class);
         }else{
-            doctorDto = DoctorMapper.fromEntity(doctorRepository.findById(id).get());
+            Doctor doctor = doctorRepository.findById(id).orElseThrow(()->new ResponseValidationException("Doctor not found"));
+            doctorDto = DoctorMapper.fromEntity(doctor);
             String dataForRedis = Util.convertToString(doctorDto);
             redisService.saveInRedis(Constants.REDIS_GET_DOCTOR + id, dataForRedis, redisExpirationTime);
         }
