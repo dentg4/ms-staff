@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class DoctorAddapter implements DoctorServiceOut {
+public class DoctorAdapter implements DoctorServiceOut {
 
     private final DoctorRepository doctorRepository;
     private final ClinicRepository clinicRepository;
@@ -108,7 +108,7 @@ public class DoctorAddapter implements DoctorServiceOut {
         entity.setEmail(doctorRequest.getEmail());
         entity.setAddress(doctorRequest.getAddress());
 
-        Clinic clinic = clinicRepository.findByIdentificationNumber(doctorRequest.getClinic()).orElseThrow(()->{
+        Clinic clinic = clinicRepository.findByIdentificationNumber(doctorRequest.getClinic()).orElseThrow(() -> {
             throw new ResponseValidationException("Clinic not found");
         });
 

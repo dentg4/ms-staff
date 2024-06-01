@@ -2,8 +2,10 @@ package com.codigo.clinica.msstaff.infrastructure.adapters;
 
 import com.codigo.clinica.msstaff.domain.aggregates.constants.Constants;
 import com.codigo.clinica.msstaff.domain.aggregates.dto.AppointmentDto;
+import com.codigo.clinica.msstaff.domain.aggregates.dto.PatientDto;
 import com.codigo.clinica.msstaff.domain.aggregates.request.AppointmentRequest;
 import com.codigo.clinica.msstaff.domain.ports.out.AppointmentServiceOut;
+import com.codigo.clinica.msstaff.infrastructure.client.ClientMsPatient;
 import com.codigo.clinica.msstaff.infrastructure.dao.AppointmentRepository;
 import com.codigo.clinica.msstaff.infrastructure.dao.DoctorRepository;
 import com.codigo.clinica.msstaff.infrastructure.entity.Appointment;
@@ -23,10 +25,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AppointmentAddapter implements AppointmentServiceOut {
+public class AppointmentAdapter implements AppointmentServiceOut {
 
     private final AppointmentRepository appointmentRepository;
     private final DoctorRepository doctorRepository;
+    private final ClientMsPatient clientMsPatient;
     private final RedisService redisService;
 
     @Value("${ms.redis.expiration_time}")
@@ -45,7 +48,7 @@ public class AppointmentAddapter implements AppointmentServiceOut {
         if(redisInfo != null){
             appointmentDto = Util.convertFromString(redisInfo, AppointmentDto.class);
         }else{
-            Appointment appointment = appointmentRepository.findById(id).orElseThrow(()->new ResponseValidationException("Appointment not found"));
+            Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new ResponseValidationException("Appointment not found"));
             appointmentDto = AppointmentMapper.fromEntity(appointment);
             String dataForRedis = Util.convertToString(appointmentDto);
             redisService.saveInRedis(Constants.REDIS_GET_APPOINTMENT + id, dataForRedis, redisExpirationTime);
@@ -91,13 +94,13 @@ public class AppointmentAddapter implements AppointmentServiceOut {
     private Appointment getEntity(Appointment entity, AppointmentRequest appointmentRequest, boolean updateIf, Long id){
         entity.setDate(appointmentRequest.getDate());
         entity.setDuration(appointmentRequest.getDuration());
-        //buscar patient, client ms-patient
-        entity.setPatient(appointmentRequest.getPatient());
+
+        PatientDto patient = Util.validateResponse(clientMsPatient.getPatientById(appointmentRequest.getPatient()));
+        entity.setPatient(patient.getId());
 
         Doctor doctor = doctorRepository.findById(appointmentRequest.getDoctor())
                 .orElseThrow(() -> new ResponseValidationException("Doctor not found"));
         entity.setDoctor(doctor);
-
 
         if (updateIf) {
             entity.setId(id);

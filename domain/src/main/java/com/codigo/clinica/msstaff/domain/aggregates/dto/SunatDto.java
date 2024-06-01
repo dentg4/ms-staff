@@ -1,10 +1,12 @@
 package com.codigo.clinica.msstaff.domain.aggregates.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SunatDto {
     private String razonSocial;
     private String tipoDocumento;

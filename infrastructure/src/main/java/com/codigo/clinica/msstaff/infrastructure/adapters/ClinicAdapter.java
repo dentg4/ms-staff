@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ClinicAddapter implements ClinicServiceOut {
+public class ClinicAdapter implements ClinicServiceOut {
 
     private final ClinicRepository clinicRepository;
     private final RedisService redisService;
