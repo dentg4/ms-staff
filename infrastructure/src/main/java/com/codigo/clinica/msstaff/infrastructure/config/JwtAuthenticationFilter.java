@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwt = autHeader.substring(7);
         TokenRequest tokenRequest = new TokenRequest(jwt);
         TokenResponse tokenResponse = clientMsSecurity.validateToken(tokenRequest);
-        if(!tokenResponse.getIsValid()){
+        if(!tokenResponse.isValid()){
            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error en el token.");
            return;
         }
@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Collection<SimpleGrantedAuthority> authorities =tokenResponse.getRoles().stream().map(SimpleGrantedAuthority::new).toList();
 
             UserDetails userDetails = new User(tokenResponse.getUsername(), "", authorities);
-            if(!tokenResponse.getIsTokenExpired()){
+            if(!tokenResponse.isTokenExpired()){
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 filterChain.doFilter(request,response);

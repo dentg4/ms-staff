@@ -12,8 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenResponse {
-    private Boolean isValid;
+    private boolean isValid;
     private List<String> roles;
     private String username;
-    private Boolean isTokenExpired;
+    private boolean isTokenExpired;
 }

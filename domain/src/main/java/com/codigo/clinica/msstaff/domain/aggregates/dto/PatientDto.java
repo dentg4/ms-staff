@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PatientDto {
-    private Long id;
+    private Long idPatient;
     private String name;
     private String surname;
 }

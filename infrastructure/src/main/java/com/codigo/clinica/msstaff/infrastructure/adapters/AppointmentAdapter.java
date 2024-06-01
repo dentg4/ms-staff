@@ -96,7 +96,7 @@ public class AppointmentAdapter implements AppointmentServiceOut {
         entity.setDuration(appointmentRequest.getDuration());
 
         PatientDto patient = Util.validateResponse(clientMsPatient.getPatientById(appointmentRequest.getPatient()));
-        entity.setPatient(patient.getId());
+        entity.setPatient(patient.getIdPatient());
 
         Doctor doctor = doctorRepository.findById(appointmentRequest.getDoctor())
                 .orElseThrow(() -> new ResponseValidationException("Doctor not found"));

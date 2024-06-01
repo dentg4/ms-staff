@@ -19,7 +19,7 @@ public class AppointmentMapper {
                 .duration(entity.getDuration())
                 .doctorId(entity.getDoctor().getId())
                 .doctor(entity.getDoctor()==null ? null : DoctorMapper.fromEntity(entity.getDoctor()))
-
+                .patientId(entity.getPatient())
                 .status(entity.getStatus())
                 .createdBy(entity.getCreatedBy())
                 .createOn(entity.getCreatedOn())
